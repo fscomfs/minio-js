@@ -286,6 +286,24 @@ export function parseListObjects(xml) {
   return result
 }
 
+
+// parse XML response quotaInfo
+export function parseQuotaInfo(xml) {
+  var result = {
+    maxSpace:0,
+    maxInodes:0,
+    usedSpace:0,
+    usedInodes:0,
+    dpath:""
+  }
+  const xmlobj = parseXml(xml)
+  result.dpath = xmlobj.QuotaInfo.dpath
+  result.maxSpace = xmlobj.QuotaInfo.maxSpace
+  result.maxInodes = xmlobj.QuotaInfo.maxInodes
+  result.usedInodes = xmlobj.QuotaInfo.usedInodes
+  result.usedSpace = xmlobj.QuotaInfo.usedSpace
+  return result
+}
 // parse XML response for list objects v2 in a bucket
 export function parseListObjectsV2(xml) {
   var result = {

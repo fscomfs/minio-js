@@ -60,19 +60,28 @@ import {
   uriResourceEscape,
 } from './internal/helper.ts'
 import { PostPolicy } from './internal/post-policy.ts'
+import { readAsString } from './internal/response.ts'
 import { LEGAL_HOLD_STATUS, RETENTION_MODES, RETENTION_VALIDITY_UNITS } from './internal/type.ts'
 import { NotificationConfig, NotificationPoller } from './notification.js'
 import { ObjectUploader } from './object-uploader.js'
 import { promisify } from './promisify.js'
 import { postPresignSignatureV4, presignSignatureV4 } from './signing.ts'
 import * as transformers from './transformers.js'
+import * as xmlParsers from './xml-parsers.js'
 import { parseSelectObjectContentResponse } from './xml-parsers.js'
+
+
 
 export * from './helpers.ts'
 export * from './notification.js'
 export { CopyConditions, PostPolicy }
 
 export class Client extends TypedClient {
+
+  async getDirQuota(bucket, objectName){
+   const res =  await this.getDirQuotaQuery(bucket,objectName)
+   return res
+  }
   // Set application specific information.
   //
   // Generates User-Agent in the following style.
@@ -830,6 +839,28 @@ export class Client extends TypedClient {
       pipesetup(response, transformer)
     })
     return transformer
+  }
+
+  async getDirQuotaQuery(bucketName, prefix) {
+    if (!isValidBucketName(bucketName)) {
+      throw new errors.InvalidBucketNameError('Invalid bucket name: ' + bucketName)
+    }
+    if (!isString(prefix)) {
+      throw new TypeError('prefix should be of type "string"')
+    }
+    
+    const queries = []
+    // escape every value in query string, except maxKeys
+    queries.push(`quota=`)
+    queries.sort()
+    var query = ''
+    if (queries.length > 0) {
+      query = `${queries.join('&')}`
+    }
+    const method = 'GET'
+    const httpRes = await this.makeRequestAsync({ method, query,bucketName:bucketName,objectName: prefix}, '', [200], DEFAULT_REGION)
+    const xmlResult = await readAsString(httpRes)
+    return xmlParsers.parseQuotaInfo(xmlResult)
   }
 
   // List the objects in the bucket.
@@ -2696,3 +2727,4 @@ Client.prototype.listBuckets = callbackify(Client.prototype.listBuckets)
 Client.prototype.removeBucketReplication = callbackify(Client.prototype.removeBucketReplication)
 Client.prototype.setBucketReplication = callbackify(Client.prototype.setBucketReplication)
 Client.prototype.getBucketReplication = callbackify(Client.prototype.getBucketReplication)
+Client.prototype.getDirQuota = callbackify(Client.prototype.getDirQuota)

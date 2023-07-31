@@ -225,6 +225,8 @@ export interface MakeBucketOpt {
 
 // Exports from library
 export class Client extends TypedClient {
+
+  getDirQuota(bucketName: string, prefix: string, callback: NoResultCallback): Promise<object>
   // Bucket operations
   makeBucket(bucketName: string, region: Region, makeOpts: MakeBucketOpt, callback: NoResultCallback): void
   makeBucket(bucketName: string, region: Region, callback: NoResultCallback): void
