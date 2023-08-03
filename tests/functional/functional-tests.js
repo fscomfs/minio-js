@@ -74,10 +74,11 @@ describe('functional tests', function () {
     // If credentials aren't given, default to play.min.io.
     clientConfigParams.endPoint = '192.168.70.70'
     clientConfigParams.port = 9000
-    clientConfigParams.accessKey = '0KYZY218X7PPWQ0WYB41'
-    clientConfigParams.secretKey = '4lo1cTF8y722Wz2c3brC1lFGYYI+Zq4SbC7L1Wms'
+    clientConfigParams.accessKey = 'I713GNNHMK825VJNRIQZ'
+    clientConfigParams.secretKey = 'UUTxfRHMwn4HWOIHN6+fBdDwKKVNm2LDJ137c3em'
     clientConfigParams.useSSL = false
-    clientConfigParams.sessionToken = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiIwS1laWTIxOFg3UFBXUTBXWUI0MSIsImV4cCI6MTY5MDkwMjg4NywicGFyZW50IjoiYWRtaW4iLCJzZXNzaW9uUG9saWN5IjoiZXlKV1pYSnphVzl1SWpvZ0lqSXdNVEl0TVRBdE1UY2lMQ0pUZEdGMFpXMWxiblFpT2lCYmV5SkZabVpsWTNRaU9pQWlRV3hzYjNjaUxDSkJZM1JwYjI0aU9pQWljek02UjJWMFFuVmphMlYwVEc5allYUnBiMjRpTENKU1pYTnZkWEpqWlNJNklDSmhjbTQ2WVhkek9uTXpPam82YlhscVpuTXZLaUo5TEhzaVJXWm1aV04wSWpvZ0lrRnNiRzkzSWl3aVFXTjBhVzl1SWpvZ1d5SnpNenBIWlhSUFltcGxZM1FpTENKek16cEhaWFJDZFdOclpYUk1iMk5oZEdsdmJpSXNJbk16T2xCMWRFOWlhbVZqZENJc0luTXpPa1JsYkdWMFpVOWlhbVZqZENJc0luTXpPa2RsZEVScGNsRjFiM1JoSWl3aWN6TTZVMlYwUkdseVVYVnZkR0VpWFN3aVVtVnpiM1Z5WTJVaU9pQmJJbUZ5YmpwaGQzTTZjek02T2pwdGVXcG1jeTkwWlhOMEwzRjFiM1JoTVM4cUlsMTlYWDA9In0.9sDHeHZh-F-yUkvR_NHP_lv3h_pLcpW02Wyyapa4oLsbEfQ8mlOKGLCWiIG20k94xhjtFRSoPtAK3XaHH-NAUw'
+    clientConfigParams.sessionToken =
+      'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJJNzEzR05OSE1LODI1VkpOUklRWiIsImV4cCI6MTY5MTQwOTQ4OCwicGFyZW50IjoiYWRtaW4iLCJzZXNzaW9uUG9saWN5IjoiZXlKV1pYSnphVzl1SWpvZ0lqSXdNVEl0TVRBdE1UY2lMQ0pUZEdGMFpXMWxiblFpT2lCYmV5SkZabVpsWTNRaU9pQWlRV3hzYjNjaUxDSkJZM1JwYjI0aU9pQWljek02UjJWMFFuVmphMlYwVEc5allYUnBiMjRpTENKU1pYTnZkWEpqWlNJNklDSmhjbTQ2WVhkek9uTXpPam82WTNadFlYSjBMV1pwYkdWemVYTjBaVzB2S2lKOUxIc2lSV1ptWldOMElqb2dJa0ZzYkc5M0lpd2lRV04wYVc5dUlqb2dXeUp6TXpwSFpYUlBZbXBsWTNRaUxDSnpNenBIWlhSQ2RXTnJaWFJNYjJOaGRHbHZiaUlzSW5Nek9sQjFkRTlpYW1WamRDSXNJbk16T2tSbGJHVjBaVTlpYW1WamRDSXNJbk16T2tkbGRFUnBjbEYxYjNSaElpd2ljek02VTJWMFJHbHlVWFZ2ZEdFaUxDSnpNenBNYVhOMFFuVmphMlYwSWwwc0lsSmxjMjkxY21ObElqb2dXeUpoY200NllYZHpPbk16T2pvNlkzWnRZWEowTFdacGJHVnplWE4wWlcwdlpHVjJMV04yYldGeWRDMHlOeThxSWwxOVhYMD0ifQ.xaCJYMRxvmKnqSszNKuFMHRXC19mS6BW_zam0oIavseHu12ikIjzz2NcvchofpXPsKad0FQjrEk8OhE-gj5ncA'
   }
   const server_region = region_conf_env || DEFAULT_REGION
 
@@ -162,17 +163,33 @@ describe('functional tests', function () {
       client.traceOff()
       if (trace_func_test_file_path !== 'process.stdout') {
         traceStream.end()
-      } 
+      }
     })
   }
   describe('getDirQuota', () => {
     step('getDirQuota(bucketName, objectName)', (done) =>
-        client.getDirQuota('myjfs', 'test2/quota1/').then((dirInfo)=>{
-            done(dirInfo)
-        }).catch((e)=>{
-            done(e)
+      client
+        .getDirQuota('cvmart-filesystem', 'dev-cvmart-27/dir1/')
+        .then((dirInfo) => {
+          done(dirInfo)
         })
-      )
+        .catch((e) => {
+          done(e)
+        }),
+    )
+  })
+
+  describe('removeDir', () => {
+    step('removeDir(bucketName, objectName)', (done) =>
+      client
+        .removeDir('cvmart-filesystem', 'dev-cvmart-27/dir1/')
+        .then((dirInfo) => {
+          done(dirInfo)
+        })
+        .catch((e) => {
+          done(e)
+        }),
+    )
   })
 
   describe('makeBucket with period and region', () => {

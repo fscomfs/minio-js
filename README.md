@@ -11,13 +11,13 @@ This document assumes that you have a working [nodejs](http://nodejs.org/) setup
 ## Download from NPM
 
 ```sh
-npm install --save minio
+npm install --save minio-cvmart
 ```
 
 ## Download from Source
 
 ```sh
-git clone https://github.com/minio/minio-js
+git clone https://github.com/fscomfs/minio-js
 cd minio-js
 npm install
 npm install -g
@@ -48,6 +48,7 @@ var minioClient = new Minio.Client({
   useSSL: true,
   accessKey: 'Q3AM3UQ867SPQQA43P2F',
   secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG',
+  sessionToken: ''
 })
 ```
 
@@ -70,7 +71,12 @@ var minioClient = new Minio.Client({
   useSSL: true,
   accessKey: 'Q3AM3UQ867SPQQA43P2F',
   secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG',
+  sessionToken: ''
 })
+
+
+
+minioClient.getDirQuota('')
 
 // File that needs to be uploaded.
 var file = '/tmp/photos-europe.tar'
