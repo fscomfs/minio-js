@@ -102,7 +102,7 @@ export class Client extends TypedClient {
     await this.makeRequestAsync(
       { method, query, bucketName: bucketName, objectName: objectName },
       '',
-      [200],
+      [200, 204],
       DEFAULT_REGION,
     )
   }
